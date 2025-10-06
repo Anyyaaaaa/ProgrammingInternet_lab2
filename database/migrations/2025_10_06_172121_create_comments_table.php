@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // ID автора коментаря
+            $table->foreignId('post_id')->constrained()->onDelete('cascade'); // ID поста, до якого коментар
+            $table->text('body'); // Текст коментаря
             $table->timestamps();
         });
     }

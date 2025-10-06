@@ -47,4 +47,12 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Отримати коментарі для поста.
+     */
+    public function comments()
+    {
+        return $this->hasMany(Comment::class)->latest(); // latest() сортує коментарі від новіших
+    }
 }

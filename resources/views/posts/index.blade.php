@@ -31,7 +31,7 @@
                 <div class="p-6 text-gray-900">
                     <div class="space-y-4">
                         @forelse($posts as $post)
-                            <a href="#" class="block p-4 border rounded-lg hover:bg-gray-50">
+                            <a href="{{ route('posts.show', $post) }}" class="block p-4 border rounded-lg hover:bg-gray-50">
                                 <div class="flex justify-between items-baseline">
                                     <h5 class="font-bold text-lg mb-1">{{ $post->title }}</h5>
                                     <small class="text-sm text-gray-500">{{ $post->event_time->format('d.m.Y H:i') }}</small>

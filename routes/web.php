@@ -3,12 +3,19 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController; // Цей рядок у вас є, це добре
-
+use App\Http\Controllers\CommentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 */
+
+ // Переконайтесь, що цей use є нагорі файлу
+
+// Маршрут для збереження коментаря до конкретного поста
+Route::post('/posts/{post}/comments', [CommentController::class, 'store'])
+    ->name('posts.comments.store')
+    ->middleware('auth');
 
 Route::get('/', function () {
     return view('welcome');

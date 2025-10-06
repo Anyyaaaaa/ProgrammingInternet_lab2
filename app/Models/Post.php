@@ -55,4 +55,9 @@ class Post extends Model
     {
         return $this->hasMany(Comment::class)->latest(); // latest() сортує коментарі від новіших
     }
+
+    public function likes()
+    {
+        return $this->belongsToMany(User::class, 'likes');
+    }
 }

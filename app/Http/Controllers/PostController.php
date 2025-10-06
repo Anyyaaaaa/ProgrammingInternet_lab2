@@ -66,32 +66,44 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        // Просто передаємо конкретний пост у view
         return view('posts.show', compact('post'));
     }
 
-
-    /**
-     * Show the form for editing the specified resource.
-     */
+    public function like(Post $post)
+    {
+        auth()->user()->likes()->toggle($post->id);
+        return back();
+    }
     public function edit(Post $post)
     {
-        // Цей метод ми реалізуємо пізніше
+        if (!auth()->user()->is_admin) {
+            abort(403);
+        }
+        $categories = Category::all();
+        return view('posts.edit', compact('post', 'categories'));
     }
-
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Post $post)
     {
-        // Цей метод ми реалізуємо пізніше
+        if (!auth()->user()->is_admin) {
+            abort(403);
+        }
+        $validated = $request->validate([
+            'title' => 'required|string|max:255',
+            'content' => 'required|string',
+            'event_time' => 'required|date',
+            'location' => 'required|string|max:255',
+            'category_id' => 'required|exists:categories,id',
+        ]);
+        $post->update($validated);
+        return redirect()->route('posts.show', $post)->with('success', 'Подію успішно оновлено!');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Post $post)
     {
-        // Цей метод ми реалізуємо пізніше
+        if (!auth()->user()->is_admin) {
+            abort(403);
+        }
+        $post->delete();
+        return redirect()->route('posts.index')->with('success', 'Подію успішно видалено!');
     }
 }

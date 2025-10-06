@@ -47,4 +47,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+    /**
+     * Пости, які вподобав цей користувач.
+     */
+    public function likes()
+    {
+        return $this->belongsToMany(Post::class, 'likes');
+    }
 }

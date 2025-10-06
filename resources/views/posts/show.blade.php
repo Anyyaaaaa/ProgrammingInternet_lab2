@@ -39,6 +39,48 @@
                         </div>
                     @endauth
 
+                    {{-- Секція дій (Лайки, Редагування, Видалення) --}}
+                    {{-- Секція дій (Лайки, Редагування, Видалення) --}}
+                    <div class="mt-4 flex items-center justify-between">
+
+                        {{-- Блок з Лайками (ліва сторона) --}}
+                        <div class="flex items-center space-x-2">
+                            @auth
+                                <form action="{{ route('posts.like', $post) }}" method="POST">
+                                    @csrf
+                                    <button type="submit" class="text-2xl focus:outline-none transition-transform duration-150 ease-in-out hover:scale-125">
+                                        @if(auth()->user()->likes->contains($post))
+                                            <span>❤️</span>
+                                        @else
+                                            <span>🤍</span>
+                                        @endif
+                                    </button>
+                                </form>
+                            @endauth
+                            <span class="text-gray-600 font-semibold pt-1">
+            {{ $post->likes->count() }}
+        </span>
+                        </div>
+
+                        {{-- Блок з кнопками для адміна (права сторона) --}}
+                        @auth
+                            @if(auth()->user()->is_admin)
+                                <div class="flex items-center space-x-4">
+                                    {{-- Кнопка Редагувати --}}
+                                    <a href="{{ route('posts.edit', $post) }}" class="text-2xl transition-transform duration-150 ease-in-out hover:scale-125" title="Редагувати">✏️</a>
+
+                                    {{-- Форма для Видалення --}}
+                                    <form action="{{ route('posts.destroy', $post) }}" method="POST" onsubmit="return confirm('Ви впевнені, що хочете видалити цю подію?');">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-2xl transition-transform duration-150 ease-in-out hover:scale-125" title="Видалити">🗑️</button>
+                                    </form>
+                                </div>
+                            @endif
+                        @endauth
+                    </div>
+
+
                     {{-- Список існуючих коментарів --}}
                     <div class="space-y-4">
                         @forelse ($post->comments as $comment)
@@ -53,6 +95,8 @@
                             <p>Ще немає коментарів. Будьте першим!</p>
                         @endforelse
                     </div>
+
+
 
                 </div>
             </div>

@@ -2,17 +2,20 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\PostController; // Цей рядок у вас є, це добре
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\CommentController;
+use App\Models\Post;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
 */
 
- // Переконайтесь, що цей use є нагорі файлу
+Route::post('/posts/{post}/like', [PostController::class, 'like'])
+    ->name('posts.like')
+    ->middleware('auth');
 
-// Маршрут для збереження коментаря до конкретного поста
 Route::post('/posts/{post}/comments', [CommentController::class, 'store'])
     ->name('posts.comments.store')
     ->middleware('auth');
@@ -24,12 +27,8 @@ Route::get('/', function () {
 Route::get('/dashboard', [PostController::class, 'index'])
     ->middleware(['auth', 'verified'])->name('dashboard');
 
-// -------------------------------------------------------------------
-// ОСЬ ЦЕЙ БЛОК ПОТРІБНО ДОДАТИ
-// Він створює маршрути posts.index, posts.create, posts.store і т.д.
 Route::resource('posts', PostController::class)
     ->middleware(['auth', 'verified']);
-// -------------------------------------------------------------------
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

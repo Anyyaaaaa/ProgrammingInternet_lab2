@@ -1,27 +1,33 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LabController;
-
+use App\Http\Controllers\PostController; // Цей рядок у вас є, це добре
 
 /*
 |--------------------------------------------------------------------------
 | Web Routes
 |--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider and all of them will
-| be assigned to the "web" middleware group. Make something great!
-|
 */
 
 Route::get('/', function () {
     return view('welcome');
 });
-Route::middleware(['query.mode'])->group(function () {
-    Route::get('/Lab', [LabController::class, 'index']);
-    Route::get('/Lab/about', [LabController::class, 'about']);
-    Route::get('/Lab/status', [LabController::class, 'status']);
-    Route::get('/Lab/echo/{text}', [LabController::class, 'echo']);
+
+Route::get('/dashboard', [PostController::class, 'index'])
+    ->middleware(['auth', 'verified'])->name('dashboard');
+
+// -------------------------------------------------------------------
+// ОСЬ ЦЕЙ БЛОК ПОТРІБНО ДОДАТИ
+// Він створює маршрути posts.index, posts.create, posts.store і т.д.
+Route::resource('posts', PostController::class)
+    ->middleware(['auth', 'verified']);
+// -------------------------------------------------------------------
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+require __DIR__.'/auth.php';

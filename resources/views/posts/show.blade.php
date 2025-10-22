@@ -9,8 +9,6 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
                 <div class="p-6 text-gray-900">
-
-                    {{-- Деталі Івенту --}}
                     <div class="mb-6 pb-4 border-b">
                         <p class="text-gray-600 text-sm">
                             <strong>Категорія:</strong> {{ $post->category->name }} |
@@ -22,11 +20,7 @@
                             {!! nl2br(e($post->content)) !!}
                         </div>
                     </div>
-
-                    {{-- Секція коментарів --}}
                     <h3 class="font-semibold text-lg mb-4">Коментарі ({{ $post->comments->count() }})</h3>
-
-                    {{-- Форма для додавання нового коментаря --}}
                     @auth
                         <div class="mb-6">
                             <form action="{{ route('posts.comments.store', $post) }}" method="POST">
@@ -38,12 +32,7 @@
                             </form>
                         </div>
                     @endauth
-
-                    {{-- Секція дій (Лайки, Редагування, Видалення) --}}
-                    {{-- Секція дій (Лайки, Редагування, Видалення) --}}
                     <div class="mt-4 flex items-center justify-between">
-
-                        {{-- Блок з Лайками (ліва сторона) --}}
                         <div class="flex items-center space-x-2">
                             @auth
                                 <form action="{{ route('posts.like', $post) }}" method="POST">
@@ -61,15 +50,10 @@
             {{ $post->likes->count() }}
         </span>
                         </div>
-
-                        {{-- Блок з кнопками для адміна (права сторона) --}}
                         @auth
                             @if(auth()->user()->is_admin)
                                 <div class="flex items-center space-x-4">
-                                    {{-- Кнопка Редагувати --}}
                                     <a href="{{ route('posts.edit', $post) }}" class="text-2xl transition-transform duration-150 ease-in-out hover:scale-125" title="Редагувати">✏️</a>
-
-                                    {{-- Форма для Видалення --}}
                                     <form action="{{ route('posts.destroy', $post) }}" method="POST" onsubmit="return confirm('Ви впевнені, що хочете видалити цю подію?');">
                                         @csrf
                                         @method('DELETE')
@@ -80,8 +64,6 @@
                         @endauth
                     </div>
 
-
-                    {{-- Список існуючих коментарів --}}
                     <div class="space-y-4">
                         @forelse ($post->comments as $comment)
                             <div class="p-4 bg-gray-50 rounded-lg">
@@ -95,9 +77,6 @@
                             <p>Ще немає коментарів. Будьте першим!</p>
                         @endforelse
                     </div>
-
-
-
                 </div>
             </div>
         </div>

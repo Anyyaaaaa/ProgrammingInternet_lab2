@@ -23,7 +23,7 @@
 
                     <form action="{{ route('posts.update', $post) }}" method="POST">
                         @csrf
-                        @method('PATCH') {{-- Важливо: Вказуємо, що це метод оновлення --}}
+                        @method('PATCH')
 
                         <div class="mb-4">
                             <label for="title" class="block font-medium text-sm text-gray-700">Назва події</label>

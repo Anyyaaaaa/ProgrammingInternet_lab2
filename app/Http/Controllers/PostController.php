@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
-use App\Models\Post;
+use App\Models\Event;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -14,7 +14,7 @@ class PostController extends Controller
     public function index()
     {
         // Беремо всі пости, сортуючи від найновіших, і додаємо пагінацію
-        $posts = Post::latest()->paginate(10);
+        $posts = Event::latest()->paginate(10);
 
         // Передаємо пости у view (який ми створимо пізніше)
         return view('posts.index', compact('posts'));
@@ -55,7 +55,7 @@ class PostController extends Controller
         $validated['user_id'] = auth()->id();
 
         // 3. Створюємо новий пост (івент) в базі даних
-        Post::create($validated);
+        Event::create($validated);
 
         // 4. Перенаправляємо користувача на головну сторінку з повідомленням про успіх
         return redirect()->route('posts.index')->with('success', 'Подію успішно анонсовано!');
@@ -64,17 +64,17 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(Event $post)
     {
         return view('posts.show', compact('post'));
     }
 
-    public function like(Post $post)
+    public function like(Event $post)
     {
         auth()->user()->likes()->toggle($post->id);
         return back();
     }
-    public function edit(Post $post)
+    public function edit(Event $post)
     {
         if (!auth()->user()->is_admin) {
             abort(403);
@@ -82,7 +82,7 @@ class PostController extends Controller
         $categories = Category::all();
         return view('posts.edit', compact('post', 'categories'));
     }
-    public function update(Request $request, Post $post)
+    public function update(Request $request, Event $post)
     {
         if (!auth()->user()->is_admin) {
             abort(403);
@@ -98,7 +98,7 @@ class PostController extends Controller
         return redirect()->route('posts.show', $post)->with('success', 'Подію успішно оновлено!');
     }
 
-    public function destroy(Post $post)
+    public function destroy(Event $post)
     {
         if (!auth()->user()->is_admin) {
             abort(403);

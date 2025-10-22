@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
+use App\Models\Event;
 use Illuminate\Http\Request;
 
 class CommentController extends Controller
@@ -10,7 +10,7 @@ class CommentController extends Controller
     /**
      * Збереження нового коментаря в базі даних.
      */
-    public function store(Request $request, Post $post)
+    public function store(Request $request, Event $post)
     {
         // Валідація: перевіряємо, що текст коментаря не порожній
         $request->validate([
